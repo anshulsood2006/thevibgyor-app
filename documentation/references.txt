@@ -1,0 +1,2 @@
+https://www.unlogged.io/post/integrating-jwt-with-spring-security-6-in-spring-boot-3
+https://careerfoundry.com/en/blog/ui-design/ui-element-glossary/

@@ -1,0 +1,107 @@
+/* Home.css */
+.gridContainer {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar content";
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 20% 80%;
+  height: 100vh;
+}
+
+.header {
+  grid-area: header;
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+}
+
+.navLinks a {
+  color: white;
+  margin-right: 3rem;
+  text-decoration: none;
+}
+
+.navLinks a.active {
+  font-weight: bold;
+  border-bottom: 2px solid white;
+}
+
+.navLinks a:hover {
+  text-decoration: underline;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: #f4f4f4;
+  padding: 1rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 1rem;
+}
+
+.content {
+  grid-area: content;
+  padding: 1rem;
+}
+
+/* Burger menu styles */
+.burgerMenu {
+  position: relative;
+}
+
+.burgerMenuButton {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.burgerMenuContent {
+  position: absolute;
+  right: 0;
+  background-color: #333;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  text-align: center;
+  z-index: 100;
+}
+
+.burgerMenuContent a {
+  color: white;
+  padding: 5px 0;
+  text-decoration: none;
+}
+
+.burgerMenuContent a:hover {
+  background-color: #444;
+}
+
+.rolesDisplay {
+  color: white;
+  padding: 5px 0;
+  cursor: default;
+  user-select: none;
+  font-size: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
