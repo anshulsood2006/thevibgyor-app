@@ -1,0 +1,17 @@
+package com.arsoft.projects.thevibgyor.backend.model;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@AllArgsConstructor
+@Getter
+@ToString
+@EqualsAndHashCode
+public class PageItem<T> {
+    private int pageNumber;
+    private long size;
+    private long totalElements;
+    private T data;
+}

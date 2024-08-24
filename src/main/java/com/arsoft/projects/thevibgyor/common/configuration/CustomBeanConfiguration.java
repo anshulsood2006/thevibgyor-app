@@ -32,21 +32,21 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class CustomBeanConfiguration {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("akhil")
-                .password(passwordEncoder().encode("sood"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.builder()
-                .username("anshul")
-                .password(passwordEncoder().encode("sood"))
-                .roles("ADMIN")
-                .build();
-        log.info("userDetailsService has been set up.");
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        UserDetails user = User.builder()
+//                .username("akhil")
+//                .password(passwordEncoder().encode("sood"))
+//                .roles("USER")
+//                .build();
+//        UserDetails admin = User.builder()
+//                .username("anshul")
+//                .password(passwordEncoder().encode("sood"))
+//                .roles("ADMIN")
+//                .build();
+//        log.info("userDetailsService has been set up.");
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

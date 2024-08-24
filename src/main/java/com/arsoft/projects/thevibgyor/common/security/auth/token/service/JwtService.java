@@ -46,7 +46,8 @@ public class JwtService {
                 .issuer(issuer)
                 .claim("roles", user.getRoles().stream()
                         .map(Role::getRoleName)
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toList())) 
+                
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + ttl))
                 .signWith(SIGNING_KEY, Jwts.SIG.HS256)

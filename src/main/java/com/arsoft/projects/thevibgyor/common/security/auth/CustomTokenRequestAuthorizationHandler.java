@@ -37,6 +37,7 @@ public class CustomTokenRequestAuthorizationHandler implements AccessDeniedHandl
         String url = HttpRequestUtil.getFullURL(request);
         int statusCode = HttpStatus.FORBIDDEN.value();
         response.setStatus(statusCode);
+        
         ZonedDateTime endZonedDateTime = ZonedDateTime.now();
         long elapsedTime = TimeUtil.getElapsedTimeInMillis(startZonedDateTime, endZonedDateTime);
         Header header = new Header(url, startZonedDateTime, endZonedDateTime, elapsedTime, statusCode);

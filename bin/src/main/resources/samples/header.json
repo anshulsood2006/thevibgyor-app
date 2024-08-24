@@ -1,0 +1,45 @@
+{
+  "header": {
+    "url": "http://localhost:8080/auth/get-token",
+    "requestTime": "2024-07-24T10:08:17.804+05:30",
+    "responseTime": "2024-07-24T10:08:18.054+05:30",
+    "elapsedTimeInMillis": 249,
+    "httpStatus": 200
+  },
+  "response": {
+    "multi": true,
+    "key": "headers",
+    "data ": [
+      {
+        "roles": [
+          1,
+          2
+        ],
+        "displayName": "Header 1",
+        "order": "1"
+      },
+      {
+        "roles": [
+          1
+        ],
+        "displayName": "Header 2",
+        "order": "2"
+      },
+      {
+        "roles": [
+          2
+        ],
+        "displayName": "Header 3",
+        "order": "3"
+      },
+      {
+        "roles": [
+          1,
+          2
+        ],
+        "displayName": "Header 4",
+        "order": "4"
+      }
+    ]
+  }
+}
