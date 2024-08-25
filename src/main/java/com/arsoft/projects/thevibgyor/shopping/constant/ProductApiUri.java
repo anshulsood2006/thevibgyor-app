@@ -8,5 +8,6 @@ public class ProductApiUri {
     public static final String PRODUCT = "/product";
     public static final String DELETE = "/delete";
     public static final String ACTIVATE = "/active";
+    public static final String FIND_BY_ID = "/find/by/{id}";
     
 }

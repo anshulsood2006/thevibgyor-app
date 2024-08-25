@@ -19,4 +19,6 @@ public interface ProductService {
 	void deleteProduct(String id) throws BadRequestException;
 	
 	Boolean changeStatus(String id) throws BadRequestException;
+	
+	ProductResponse fetchProduct(String id) throws BadRequestException;
 }

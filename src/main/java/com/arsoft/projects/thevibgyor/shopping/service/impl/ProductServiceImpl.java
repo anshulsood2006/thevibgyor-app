@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -35,32 +35,32 @@ public class ProductServiceImpl implements ProductService {
 	public String upsertProduct(ProductRequest productRequest, HttpServletRequest request) throws BadRequestException {
 		String userName = String.valueOf(request.getAttribute("userName"));
 		User user = userService.getUser(userName);
-			validateInput(productRequest);
-			Product product = null;
-			String result = "";
-			if (productRequest.getId() != null && !productRequest.getId().isEmpty()) {
-				// product will be updated
-				product = productRepository.findById(productRequest.getId())
-						.orElseThrow(() -> new RuntimeException("Product not found by id :" + productRequest.getId()));
-				product.setUpdatedAt(LocalDateTime.now());
-				result = "updated";
-			} else {
-				product = new Product();
-				product.setCreatedAt(LocalDateTime.now());
-				product.setIsActive(Boolean.TRUE);
-				product.setIsDeleted(Boolean.FALSE);
-				result = "saved";
-			}
-			product.setActualPrice(productRequest.getActualPrice());
-			if (productRequest.getDiscount() != null && productRequest.getDiscount() > 0)
-				product.setOfferPrice(
-						(productRequest.getActualPrice()) - (productRequest.getActualPrice() * productRequest.getDiscount() / 100));
+		validateInput(productRequest);
+		Product product = null;
+		String result = "";
+		if (productRequest.getId() != null && !productRequest.getId().isEmpty()) {
+			// product will be updated
+			product = productRepository.findById(productRequest.getId())
+					.orElseThrow(() -> new RuntimeException("Product not found by id :" + productRequest.getId()));
+			product.setUpdatedAt(LocalDateTime.now());
+			result = "updated";
+		} else {
+			product = new Product();
+			product.setCreatedAt(LocalDateTime.now());
+			product.setIsActive(Boolean.TRUE);
+			product.setIsDeleted(Boolean.FALSE);
+			result = "saved";
+		}
+		product.setActualPrice(productRequest.getActualPrice());
+		if (productRequest.getDiscount() != null && productRequest.getDiscount() > 0)
+			product.setOfferPrice((productRequest.getActualPrice())
+					- (productRequest.getActualPrice() * productRequest.getDiscount() / 100));
 
-			product.setOwner(user);
-			product.setDiscription(productRequest.getDescription());
-			product.setProductName(productRequest.getProductName());
-			productRepository.save(product);
-			return result;
+		product.setOwner(user);
+		product.setDiscription(productRequest.getDescription());
+		product.setProductName(productRequest.getProductName());
+		productRepository.save(product);
+		return result;
 	}
 
 	@Override
@@ -70,31 +70,34 @@ public class ProductServiceImpl implements ProductService {
 		Page<Product> products = productRepository.findAll(pageable);
 		List<ProductResponse> responseList = products.stream()
 				.map(product -> new ProductResponse(product.getId(), product.getProductName(), product.getActualPrice(),
-						product.getDiscription(), product.getOfferPrice(), product.getOwner()))
+						product.getDiscription(), product.getOfferPrice(), product.getIsActive(), product.getOwner()))
 				.collect(Collectors.toList());
 		return new PageItem<List<ProductResponse>>(pageNo, size, products.getTotalElements(), responseList);
 	}
-	
+
 	@Override
 	public void deleteProduct(String id) throws BadRequestException {
-			if (id==null || id.isEmpty()) {
-				throw new BadRequestException("Product id is null");
-			}
-			Product product = productRepository.findById(id).orElseThrow(()->new BadRequestException("Product not found by id : "+id));
-			productRepository.delete(product);
+		if (id == null || id.isEmpty()) {
+			throw new BadRequestException("Product id is null");
+		}
+		Product product = productRepository.findById(id)
+				.orElseThrow(() -> new BadRequestException("Product not found by id : " + id));
+		productRepository.delete(product);
 	}
 
 	@Override
 	public Boolean changeStatus(String id) throws BadRequestException {
 		Product product;
-			if (id==null || id.isEmpty()) {
-				throw new BadRequestException("Product id is null");
-			}
-			product = productRepository.findById(id).orElseThrow(()->new BadRequestException("Product not found by id : "+id));
-			product.setIsActive(product.getIsActive().equals(Boolean.TRUE)?Boolean.FALSE:Boolean.TRUE);
-			product = productRepository.save(product);
+		if (id == null || id.isEmpty()) {
+			throw new BadRequestException("Product id is null");
+		}
+		product = productRepository.findById(id)
+				.orElseThrow(() -> new BadRequestException("Product not found by id : " + id));
+		product.setIsActive(product.getIsActive().equals(Boolean.TRUE) ? Boolean.FALSE : Boolean.TRUE);
+		product = productRepository.save(product);
 		return product.getIsActive();
 	}
+
 	private void validateInput(ProductRequest product) throws BadRequestException {
 		if (product.getProductName() == null || product.getProductName().isEmpty()) {
 			throw new BadRequestException("Product Name is null");
@@ -105,6 +108,22 @@ public class ProductServiceImpl implements ProductService {
 		if (product.getActualPrice() == null || product.getActualPrice() <= 0) {
 			throw new BadRequestException("Product price should be valid");
 		}
+	}
+
+	@Override
+	public ProductResponse fetchProduct(String id) throws BadRequestException {
+		Product product = productRepository.findById(id)
+				.orElseThrow(() -> new BadRequestException("Product not found by id : " + id));
+		ProductResponse response = new ProductResponse();
+		response.setId(product.getId());
+		response.setActualPrice(product.getActualPrice());
+		response.setProductName(product.getProductName());
+		response.setOwner(product.getOwner());
+		response.setDescription(product.getDiscription());
+		response.setIsActive(product.getIsActive());
+		if (product.getOfferPrice() != null)
+			response.setOfferPrice(product.getOfferPrice());
+		return response;
 	}
 
 }

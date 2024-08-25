@@ -1,7 +1,6 @@
 package com.arsoft.projects.thevibgyor.shopping.DTO;
 
 import com.arsoft.projects.thevibgyor.backend.model.User;
-import com.arsoft.projects.thevibgyor.shopping.entity.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +22,8 @@ public class ProductResponse {
 	private String description;
 
 	private Double offerPrice;
+	
+	private Boolean isActive;
 
 	private User owner;
 

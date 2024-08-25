@@ -8,6 +8,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -133,6 +134,24 @@ public class ProductController {
 			Boolean status = productService.changeStatus(id);
 			String msg = status ? "Product activated successfully." : "Product deactivated successfully.";
 			GenericResponseInfo<String> genericResponseInfo = new GenericResponseInfo<>(status, "product", 1, msg);
+			long elapsedTime = TimeUtil.getElapsedTimeInMillis(startZonedDateTime, ZonedDateTime.now());
+			header = new Header(url, startZonedDateTime, ZonedDateTime.now(), elapsedTime, HttpStatus.OK.getValue());
+			return new GenericResponse<>(header, genericResponseInfo);
+		} catch (Exception e) {
+			log.error(String.format("Exception occurred %s", e.getMessage()));
+			throw new GenericException(e, requestTime);
+		}
+	}
+	
+	@GetMapping(value = ProductApiUri.FIND_BY_ID)
+	public GenericResponse<?> findById(@RequestAttribute("requestTime") ZonedDateTime requestTime,
+			HttpServletRequest request, @PathVariable String id) throws BadRequestException {
+		log.info("Request has reached product controller now");
+		Header header;
+		ZonedDateTime startZonedDateTime = Objects.requireNonNullElseGet(requestTime, ZonedDateTime::now);
+		String url = HttpRequestUtil.getFullURL(request);
+		try {
+			GenericResponseInfo<ProductResponse> genericResponseInfo = new GenericResponseInfo<>(Boolean.FALSE, "product", 1, productService.fetchProduct(id));
 			long elapsedTime = TimeUtil.getElapsedTimeInMillis(startZonedDateTime, ZonedDateTime.now());
 			header = new Header(url, startZonedDateTime, ZonedDateTime.now(), elapsedTime, HttpStatus.OK.getValue());
 			return new GenericResponse<>(header, genericResponseInfo);
