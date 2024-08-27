@@ -1,4 +1,4 @@
-package com.arsoft.projects.thevibgyor.backend.controller.shopping;
+package com.arsoft.projects.thevibgyor.shopping.controller;
 
 import java.time.ZonedDateTime;
 import java.util.List;
